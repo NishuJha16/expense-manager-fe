@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ThemeToggle from "../theme-toggle/theme-toggle";
 import { ReactComponent as HamburgerIcon } from "../../assets/hamburger.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutService } from "../../services/login.service";
 
 interface NavItem {
   label: string;
@@ -17,6 +18,21 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ items }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const data = await logoutService();
+      localStorage.clear();
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -45,8 +61,11 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
             </div>
             <div className="flex gap-2 items-center">
               <ThemeToggle />
-              <button className="h-8 px-2 bg-gray-200 dark:bg-gray-700 rounded-lg">
-                Logout
+              <button
+                className="h-8 px-2 bg-gray-200 dark:bg-gray-700 rounded-lg"
+                onClick={handleLogout}
+              >
+                {loading ? "Loggin out" : "Logout"}
               </button>
             </div>
           </div>

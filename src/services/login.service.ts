@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./interceptor";
 
 export const loginService = async (username: string, password: string) => {
   const response = await axios.post(
@@ -24,5 +25,10 @@ export const registerService = async (
       name,
     }
   );
+  return response.data;
+};
+
+export const logoutService = async () => {
+  const response = await axiosInstance.post("auth/logout");
   return response.data;
 };

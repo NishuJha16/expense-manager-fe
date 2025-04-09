@@ -41,6 +41,12 @@ const Register = () => {
     }
   }, [username, password]);
 
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <Authentication>
       <div className="flex flex-col gap-3 flex-1 items-center justify-center">
