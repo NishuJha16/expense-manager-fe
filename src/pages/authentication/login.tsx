@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { loginService } from "../../services/login.service";
 import { useNavigate } from "react-router-dom";
 import Authentication from "./authentication";
+import { ReactComponent as Spinner } from "../../assets/spinner.svg";
 
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const [error, setError] = useState<string>("");
 
   const handleLogin = async () => {
     if (username && password) {
+      setLoading(true);
       try {
         setError("");
         const data = await loginService(username, password);
@@ -19,6 +22,8 @@ const Login = () => {
         navigate("/");
       } catch (error) {
         setError("Bad Credentials");
+      } finally {
+        setLoading(false);
       }
     } else {
       setError("Please enter both username and password");
@@ -68,9 +73,12 @@ const Login = () => {
           </div>
           <button
             onClick={handleLogin}
-            className="relative mb-6 rounded-lg flex w-full text-center bg-[#008EE4] text-white px-3 py-2 justify-center"
+            style={{ opacity: loading ? 0.5 : 1 }}
+            disabled={loading}
+            className="relative items-center mb-6 rounded-lg flex w-full text-center bg-[#008EE4] text-white px-3 py-2 justify-center"
           >
-            Login
+            {loading && <Spinner width={20} height={20} />}
+            {loading ? "Checking credentials..." : "Login"}
           </button>
           <div className="text-md">
             Don't have an account?

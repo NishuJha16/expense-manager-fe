@@ -56,6 +56,7 @@ const UserInfoCard = ({ userInfo }: { userInfo: IUser | null }) => {
           <img
             src="https://avatar.iran.liara.run/public"
             className="absolute max-h-[150px] max-w-[150px] top-[-60px] block lg:hidden left-[calc(50%-75px)]"
+            onError={(error) => console.log(error)}
           />
           <div className="text-sm">{greeting()}</div>
           <div className="text-xl font-semibold">{userInfo?.name}</div>

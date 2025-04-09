@@ -13,10 +13,10 @@ const Modal = ({ onClose, title, children }: any) => {
   }, []);
 
   const handleClose = () => {
-    setIsVisible(false); // Trigger closing animation
+    setIsVisible(false);
     setTimeout(() => {
-      onClose(); // Close after animation completes
-    }, 300); // Timeout duration should match CSS transition duration
+      onClose();
+    }, 300);
   };
 
   return (

@@ -1,5 +1,6 @@
 import Card from "../card/card";
 import { ReactComponent as ConcentricCircle } from "../../assets/semi-centric-circle.svg";
+import moment from "moment";
 
 const BudgetExpenseGraph = ({ expense, budget }: any) => {
   const percentage = (expense / budget) * 100;
@@ -8,9 +9,9 @@ const BudgetExpenseGraph = ({ expense, budget }: any) => {
       <div className="flex flex-col h-full min-h-[200px] lg:min-h-0">
         <div className="text-lg font-bold ">Budget vs Expense</div>
         <div className="text-slate-400 text-xs italic">
-          From 01 - 22nd August
+          From 1st - {moment().format("Do MMMM YYYY")}
         </div>
-        <div className="flex-1 flex justify-center relative">
+        <div className="flex-1 flex justify-center relative overflow-hidden">
           {percentage ? (
             <div className="absolute ">
               <svg

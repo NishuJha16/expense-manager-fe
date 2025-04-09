@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ThemeToggle from "../theme-toggle/theme-toggle";
 import { ReactComponent as HamburgerIcon } from "../../assets/hamburger.svg";
+import { Link } from "react-router-dom";
 
 interface NavItem {
   label: string;
@@ -31,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
                 <span className="sr-only">Open sidebar</span>
                 <HamburgerIcon />
               </button>
-              <a className="flex ms-2 md:me-24">
+              <Link to={"/"} className="flex ms-2 md:me-24">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   className="h-8 me-3"
@@ -40,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   BudgetBee
                 </span>
-              </a>
+              </Link>
             </div>
             <div className="flex gap-2 items-center">
               <ThemeToggle />
@@ -62,12 +63,12 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
           <ul className="space-y-2">
             {items.map((item, index) => (
               <li key={index}>
-                <a
-                  href={item.route}
+                <Link
+                  to={item.route}
                   className="flex items-center p-2 text-base font-normal text-gray-900 dark:text-gray-300 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   style={
                     window.location.pathname == item.route
-                      ? { background: "gray" }
+                      ? { background: "#D5EDFF", color: "black" }
                       : undefined
                   }
                 >
@@ -83,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
                       {item.notificationCount}
                     </span>
                   )}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

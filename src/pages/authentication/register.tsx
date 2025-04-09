@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { loginService, registerService } from "../../services/login.service";
+import { registerService } from "../../services/login.service";
 import { useNavigate } from "react-router-dom";
 import Authentication from "./authentication";
+import { ReactComponent as Spinner } from "../../assets/spinner.svg";
 
 const Register = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const [error, setError] = useState<string>("");
@@ -18,12 +20,15 @@ const Register = () => {
         setError("Both passwords should match");
         return;
       }
+      setLoading(true);
       try {
         setError("");
         const data = await registerService(username, password, name);
         navigate("/login");
       } catch (error) {
         setError("Username already exists. Please try another one");
+      } finally {
+        setLoading(false);
       }
     } else {
       setError("All fields are mandatory");
@@ -96,9 +101,12 @@ const Register = () => {
           </div>
           <button
             onClick={handleRegistration}
-            className="relative mb-6 rounded-lg flex w-full text-center bg-[#008EE4] text-white px-3 py-2 justify-center"
+            style={{ opacity: loading ? 0.5 : 1 }}
+            disabled={loading}
+            className="relative items-center mb-6 rounded-lg flex w-full text-center bg-[#008EE4] text-white px-3 py-2 justify-center"
           >
-            Register
+            {loading && <Spinner width={20} height={20} />}
+            {loading ? "Creating user..." : "Register"}
           </button>
           <div className="text-md">
             Already have an account?

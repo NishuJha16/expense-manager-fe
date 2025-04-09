@@ -4,7 +4,8 @@ import Home from "../pages/home/home";
 import ProtectedRoute from "./ProtectedRoutes";
 import Register from "../pages/authentication/register";
 import UserDataProvider from "../context/user-data-context/Provider";
-import RecentTransactions from "../components/recent-transactions/recent-transactions";
+import Expenses from "../pages/expenses/Expenses";
+import Budgets from "../pages/budgets/Budgets";
 
 export const routeObject: RouteObject[] = [
   {
@@ -31,7 +32,7 @@ export const routeObject: RouteObject[] = [
         path: "/all-expenses",
         element: (
           <ProtectedRoute>
-            <RecentTransactions showAllResults />
+            <Expenses />
           </ProtectedRoute>
         ),
       },
@@ -39,7 +40,7 @@ export const routeObject: RouteObject[] = [
         path: "/budgets",
         element: (
           <ProtectedRoute>
-            <div>All Budgets</div>
+            <Budgets />
           </ProtectedRoute>
         ),
       },

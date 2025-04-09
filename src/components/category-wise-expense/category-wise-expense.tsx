@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useUserDataContextContext } from "../../context/user-data-context/context";
 import { categoryWiseExpenseMetaData } from "./constants";
 import moment from "moment";
+import { ReactComponent as NoData } from "../../assets/no-data.svg";
 
 const CategoryWiseExpense = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,15 +45,13 @@ const CategoryWiseExpense = () => {
     return categoryWiseExpenseMetaData;
   }, [categoryWiseExpenseData]);
 
-  console.log(categoryWiseExpense);
-
   return (
     <div className="flex gap-3 flex-col h-full">
       <div className="text-lg font-bold ">Category wise Expenses</div>
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 h-auto xl:h-full">
-        {categoryWiseExpense?.length ? (
-          categoryWiseExpense?.map((data, index) => (
-            <Card key={index}>
+      {categoryWiseExpense?.length ? (
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 h-auto xl:h-full">
+          {categoryWiseExpense?.map((data, index) => (
+            <Card key={index} className="max-h-[150px]">
               <div className="flex flex-col gap-2 min-w-[80px] h-full">
                 <div className="flex justify-center items-center w-[60px] h-[60px] bg-slate-300 rounded-full">
                   {data.icon}
@@ -66,13 +65,14 @@ const CategoryWiseExpense = () => {
                 </div>
               </div>
             </Card>
-          ))
-        ) : (
-          <div className="flex-1 justify-center items-center flex">
-            No Data Available
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex-1 grid-cols-3 justify-center flex-col items-center flex">
+          <NoData width={100} height={100} />
+          No Data Available
+        </div>
+      )}
     </div>
   );
 };

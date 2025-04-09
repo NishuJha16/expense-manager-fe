@@ -35,9 +35,11 @@ const ExpenseDistribution = () => {
   const getCategoryWiseExpensePercentage = async () => {
     setLoading(true);
     try {
+      const month = Number(moment().format("M"));
+      const year = Number(moment().format("YYYY"));
       const response = await getCategoryWiseExpensePercentageService(
-        Number(moment().format("M")),
-        2025
+        month,
+        year
       );
       updateCategoryWiseExpensePercentage(response);
     } catch (data) {
@@ -84,7 +86,7 @@ const ExpenseDistribution = () => {
       <div className="flex flex-col h-full">
         <div className="text-lg font-bold ">Expense Distribution</div>
         <div className="text-slate-400 text-xs italic">
-          From 01 - 22nd August
+          From 1st - {moment().format("Do MMMM YYYY")}
         </div>
         <div className="max-h-[200px] flex justify-between flex-1">
           <div className="flex flex-col gap-[2px] justify-center">

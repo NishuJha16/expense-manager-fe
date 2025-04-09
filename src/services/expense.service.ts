@@ -9,3 +9,8 @@ export const getMonthlyExpenseService = async (month: number, year: number) => {
   const response = await axiosInstance.get(`expenses/monthly/${month}/${year}`);
   return response?.data;
 };
+
+export const getAllExpenseService = async () => {
+  const response = await axiosInstance.get(`expenses`);
+  return response?.data;
+};

@@ -5,10 +5,13 @@ import { useMemo, useState } from "react";
 import {
   addCategoryWiseBudget,
   getCategoryWiseExpenseBudgetService,
+  getCategoryWiseExpensePercentageService,
 } from "../../services/budget.service";
 import { useUserDataContextContext } from "../../context/user-data-context/context";
 import { toast } from "react-toastify";
 import { monthOptions } from "../../constants/app-constants";
+import moment from "moment";
+import { ReactComponent as Spinner } from "../../assets/spinner.svg";
 
 type CreateBudgetFormData = {
   category: string;
@@ -24,16 +27,25 @@ const AddBudgetForm = ({ onClose }: any) => {
     formState: { errors },
   } = useForm<CreateBudgetFormData>();
   const [loading, setLoading] = useState<boolean>(false);
-  const { updateCategoryWiseExpenseData } = useUserDataContextContext();
+  const { updateCategoryWiseExpenseData, updateCategoryWiseExpensePercentage } =
+    useUserDataContextContext();
 
   const onSubmit = async (data: CreateBudgetFormData) => {
     setLoading(true);
     try {
-      const response = await addCategoryWiseBudget(data);
+      await addCategoryWiseBudget(data);
+      const month = Number(moment().format("M"));
+      const year = Number(moment().format("YYYY"));
       const categoryDataResponse = await getCategoryWiseExpenseBudgetService(
-        10,
-        2025
+        month,
+        year
       );
+      const percentageResponse = await getCategoryWiseExpensePercentageService(
+        month,
+        year
+      );
+      updateCategoryWiseExpensePercentage(percentageResponse);
+      updateCategoryWiseExpenseData(categoryDataResponse);
       updateCategoryWiseExpenseData(categoryDataResponse);
       toast(`Budget added successfully for ${data.category} category`, {
         type: "success",
@@ -159,9 +171,12 @@ const AddBudgetForm = ({ onClose }: any) => {
         <div>
           <button
             type="submit"
-            className="w-full bg-[#008EE4] text-white py-2 px-4 rounded-md hover:[#008EE4] focus:outline-none focus:ring-2 focus:ring-[#008EE4]"
+            style={{ opacity: loading ? 0.5 : 1 }}
+            disabled={loading}
+            className="w-full justify-center items-center flex bg-[#008EE4] text-white py-2 px-4 rounded-md hover:[#008EE4] focus:outline-none focus:ring-2 focus:ring-[#008EE4]"
           >
-            Submit
+            {loading && <Spinner width={20} height={20} />}
+            {loading ? "Adding data..." : "Submit"}
           </button>
         </div>
       </form>

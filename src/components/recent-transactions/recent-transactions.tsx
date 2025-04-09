@@ -15,10 +15,9 @@ const RecentTransactions = ({
   const getMonthlyExpense = async () => {
     setLoading(true);
     try {
-      const response = await getMonthlyExpenseService(
-        Number(moment().format("M")),
-        2025
-      );
+      const month = Number(moment().format("M"));
+      const year = Number(moment().format("YYYY"));
+      const response = await getMonthlyExpenseService(month, year);
       updateMonthlyExpense(response);
     } catch (data) {
       toast("Something went wrong", { type: "error" });
@@ -35,10 +34,12 @@ const RecentTransactions = ({
     () =>
       showAllResults
         ? monthlyExpense
-        : monthlyExpense?.slice(
+        : monthlyExpense?.length > 3
+        ? monthlyExpense?.slice(
             monthlyExpense?.length - 3,
             monthlyExpense?.length
-          ),
+          )
+        : monthlyExpense,
     [monthlyExpense, showAllResults]
   );
 

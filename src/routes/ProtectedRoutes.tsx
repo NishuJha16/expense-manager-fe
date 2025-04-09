@@ -19,9 +19,9 @@ const ProtectedRoute = ({ children, ...rest }: any) => {
   }, [isLoggedIn]);
 
   return isLoggedIn ? (
-    <div className="flex gap-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
+    <div className="flex gap-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 h-full dark:text-gray-300 overflow-hidden">
       <Sidebar items={navigationItems} />
-      <div className="flex flex-1 p-4 rounded-[40px] mt-16 mb-2 mr-2 bg-blue-100 dark:bg-gray-600 sm:ml-[15.75rem] overflow-hidden">
+      <div className="flex flex-1 p-4 rounded-[40px] mt-16 mb-2 mr-2 bg-blue-100 pt-[4rem] lg:pt-4 dark:bg-gray-600 sm:ml-[15.75rem] overflow-scroll">
         {children}
       </div>
     </div>

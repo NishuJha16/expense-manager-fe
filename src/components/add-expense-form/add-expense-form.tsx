@@ -3,10 +3,17 @@ import { useForm } from "react-hook-form";
 import { categoryWiseExpenseMetaData } from "../category-wise-expense/constants";
 import Modal from "../modal/modal";
 import { toast } from "react-toastify";
-import { addCategoryWiseExpense } from "../../services/expense.service";
-import { getCategoryWiseExpenseBudgetService } from "../../services/budget.service";
+import {
+  addCategoryWiseExpense,
+  getMonthlyExpenseService,
+} from "../../services/expense.service";
+import {
+  getCategoryWiseExpenseBudgetService,
+  getCategoryWiseExpensePercentageService,
+} from "../../services/budget.service";
 import { useUserDataContextContext } from "../../context/user-data-context/context";
 import moment from "moment";
+import { ReactComponent as Spinner } from "../../assets/spinner.svg";
 
 type CreateExpenseFormData = {
   datetime: string;
@@ -15,6 +22,8 @@ type CreateExpenseFormData = {
   description: string;
   amount: number;
   mode: string;
+  recurrencePattern: string | null;
+  isRecurring?: boolean;
 };
 
 const paymentModes = [
@@ -32,7 +41,11 @@ const AddExpenseForm = ({ onClose }: { onClose: Function }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<CreateExpenseFormData>();
-  const { updateCategoryWiseExpenseData } = useUserDataContextContext();
+  const {
+    updateCategoryWiseExpenseData,
+    updateCategoryWiseExpensePercentage,
+    updateMonthlyExpense,
+  } = useUserDataContextContext();
 
   const categories = useMemo(
     () => categoryWiseExpenseMetaData.map((data) => data.category),
@@ -42,11 +55,26 @@ const AddExpenseForm = ({ onClose }: { onClose: Function }) => {
   const onSubmit = async (data: CreateExpenseFormData) => {
     setLoading(true);
     try {
-      const response = await addCategoryWiseExpense(data);
+      await addCategoryWiseExpense({
+        ...data,
+        isRecurring: !!data.recurrencePattern,
+      });
+      const month = Number(moment().format("M"));
+      const year = Number(moment().format("YYYY"));
       const categoryDataResponse = await getCategoryWiseExpenseBudgetService(
-        Number(moment().format("M")),
-        2025
+        month,
+        year
       );
+      const percentageResponse = await getCategoryWiseExpensePercentageService(
+        month,
+        year
+      );
+      const recentTransactionResponse = await getMonthlyExpenseService(
+        month,
+        year
+      );
+      updateMonthlyExpense(recentTransactionResponse);
+      updateCategoryWiseExpensePercentage(percentageResponse);
       updateCategoryWiseExpenseData(categoryDataResponse);
       toast(`Expense added successfully for ${data.category} category`, {
         type: "success",
@@ -194,15 +222,72 @@ const AddExpenseForm = ({ onClose }: { onClose: Function }) => {
           )}
         </div>
 
+        {/* Recurrence Pattern */}
+        <div className="mt-4">
+          <label
+            htmlFor="recurrencePattern"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1"
+          >
+            Recurrence Pattern
+          </label>
+          <div className="flex gap-2">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                value="daily"
+                {...register("recurrencePattern")}
+                className="form-radio text-[#008EE4]"
+              />
+              <span className="ml-2 text-gray-700 dark:text-gray-200">
+                Daily
+              </span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                value="weekly"
+                {...register("recurrencePattern")}
+                className="form-radio text-[#008EE4]"
+              />
+              <span className="ml-2 text-gray-700 dark:text-gray-200">
+                Weekly
+              </span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                value="monthly"
+                {...register("recurrencePattern")}
+                className="form-radio text-[#008EE4]"
+              />
+              <span className="ml-2 text-gray-700 dark:text-gray-200">
+                Monthly
+              </span>
+            </label>
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                value="yearly"
+                {...register("recurrencePattern")}
+                className="form-radio text-[#008EE4]"
+              />
+              <span className="ml-2 text-gray-700 dark:text-gray-200">
+                Yearly
+              </span>
+            </label>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <div>
           <button
             type="submit"
             style={{ opacity: loading ? 0.5 : 1 }}
             disabled={loading}
-            className="w-full bg-[#008EE4] text-white py-2 px-4 rounded-md hover:bg-[#0071B3] focus:outline-none focus:ring-2 focus:ring-[#008EE4] cursor-pointer"
+            className="w-full justify-center items-center flex gap-1 bg-[#008EE4] text-white py-2 px-4 rounded-md hover:bg-[#0071B3] focus:outline-none focus:ring-2 focus:ring-[#008EE4] cursor-pointer"
           >
-            {loading ? "Adding data" : "Submit"}
+            {loading && <Spinner width={20} height={20} />}
+            {loading ? "Adding data..." : "Submit"}
           </button>
         </div>
       </form>

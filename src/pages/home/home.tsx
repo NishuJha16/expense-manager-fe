@@ -31,7 +31,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 h-full flex-1">
+    <div className="flex flex-col gap-6 pb-4 flex-1 ">
       <div className="flex gap-4 pl-0 flex-1 lg:flex-none flex-col lg:flex-row">
         <div className="flex-none lg:flex-1 rounded-2xl lg:rounded-l-full">
           <UserInfoCard userInfo={userInfo} />
