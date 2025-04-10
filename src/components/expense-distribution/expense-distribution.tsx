@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { useUserDataContextContext } from "../../context/user-data-context/context";
 import { getCategoryWiseExpensePercentageService } from "../../services/budget.service";
 import { toast } from "react-toastify";
-import { chartData } from "./data";
 import moment from "moment";
+import { ReactComponent as Spinner } from "../../assets/bouncing-circles.svg";
 
 Chart.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
 Chart.defaults.plugins.tooltip.backgroundColor = "rgb(0, 0, 156)";
@@ -88,43 +88,49 @@ const ExpenseDistribution = () => {
         <div className="text-slate-400 text-xs italic">
           From 1st - {moment().format("Do MMMM YYYY")}
         </div>
-        <div className="max-h-[200px] flex justify-between flex-1">
-          <div className="flex flex-col gap-[2px] justify-center">
-            {chartData?.labels.map((data, index) => (
-              <div
-                className="text-slate-700 dark:text-gray-200 text-xs flex gap-1 items-center"
-                key={index}
-              >
-                <div
-                  className={`w-[10px] h-[10px] rounded-full`}
-                  style={{
-                    background: chartData?.datasets[0].backgroundColor[index],
-                  }}
-                ></div>
-                <div>{data}</div>
-              </div>
-            ))}
+        {loading ? (
+          <div className="flex flex-1 justify-center items-center">
+            <Spinner width={100} height={100} />
           </div>
-          {chartData?.datasets[0]?.data?.length ? (
-            <Doughnut
-              data={chartData}
-              options={{
-                cutout: 50,
-                plugins: {
-                  datalabels: {
-                    anchor: "center",
-                    color: "#000",
-                    formatter: (value: number) => `${value}%`,
-                  },
-                },
-              }}
-            />
-          ) : (
-            <div className="flex-1 justify-center items-center flex">
-              No Data Available
+        ) : (
+          <div className="max-h-[200px] flex justify-between flex-1">
+            <div className="flex flex-col gap-[2px] justify-center">
+              {chartData?.labels.map((data, index) => (
+                <div
+                  className="text-slate-700 dark:text-gray-200 text-xs flex gap-1 items-center"
+                  key={index}
+                >
+                  <div
+                    className={`w-[10px] h-[10px] rounded-full`}
+                    style={{
+                      background: chartData?.datasets[0].backgroundColor[index],
+                    }}
+                  ></div>
+                  <div>{data}</div>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+            {chartData?.datasets[0]?.data?.length ? (
+              <Doughnut
+                data={chartData}
+                options={{
+                  cutout: 50,
+                  plugins: {
+                    datalabels: {
+                      anchor: "center",
+                      color: "#000",
+                      formatter: (value: number) => `${value}%`,
+                    },
+                  },
+                }}
+              />
+            ) : (
+              <div className="flex-1 justify-center items-center flex">
+                No Data Available
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </Card>
   );

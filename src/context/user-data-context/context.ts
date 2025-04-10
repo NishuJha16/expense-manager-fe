@@ -25,6 +25,7 @@ export interface IMonthlyExpense {
   mode: string;
   month: number;
   year: number;
+  timeUntilNext?: string;
 }
 
 interface IUserDataContext {
@@ -36,6 +37,8 @@ interface IUserDataContext {
     data: ICategoryWiseExpensePercentage
   ) => void;
   updateMonthlyExpense: (data: IMonthlyExpense[]) => void;
+  upcomingExpenses: IMonthlyExpense[];
+  updateUpcomingExpenses: (data: IMonthlyExpense[]) => void;
 }
 
 export const UserDataContext = createContext<IUserDataContext>(null!);

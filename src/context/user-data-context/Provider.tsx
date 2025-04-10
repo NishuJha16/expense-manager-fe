@@ -17,6 +17,9 @@ const UserDataProvider = () => {
     );
 
   const [monthlyExpense, setMonthlyExpense] = useState<IMonthlyExpense[]>([]);
+  const [upcomingExpenses, setUpcomingExpenses] = useState<IMonthlyExpense[]>(
+    []
+  );
 
   const updateCategoryWiseExpenseData = (value: ICategoryWiseData[]) => {
     setCategoryWiseExpenseData(value);
@@ -24,6 +27,9 @@ const UserDataProvider = () => {
 
   const updateMonthlyExpense = (value: IMonthlyExpense[]) => {
     setMonthlyExpense(value);
+  };
+  const updateUpcomingExpenses = (value: IMonthlyExpense[]) => {
+    setUpcomingExpenses(value);
   };
 
   const updateCategoryWiseExpensePercentage = (
@@ -41,6 +47,8 @@ const UserDataProvider = () => {
         updateCategoryWiseExpensePercentage,
         updateMonthlyExpense,
         monthlyExpense,
+        upcomingExpenses,
+        updateUpcomingExpenses,
       }}
     >
       <Outlet />

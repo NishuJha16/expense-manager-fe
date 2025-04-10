@@ -14,3 +14,8 @@ export const getAllExpenseService = async () => {
   const response = await axiosInstance.get(`expenses`);
   return response?.data;
 };
+
+export const getUpcomingExpenseService = async () => {
+  const response = await axiosInstance.get(`expenses/upcoming-expenses`);
+  return response?.data;
+};

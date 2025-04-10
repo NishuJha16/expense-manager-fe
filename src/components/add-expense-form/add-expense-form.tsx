@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import {
   addCategoryWiseExpense,
   getMonthlyExpenseService,
+  getUpcomingExpenseService,
 } from "../../services/expense.service";
 import {
   getCategoryWiseExpenseBudgetService,
@@ -45,6 +46,7 @@ const AddExpenseForm = ({ onClose }: { onClose: Function }) => {
     updateCategoryWiseExpenseData,
     updateCategoryWiseExpensePercentage,
     updateMonthlyExpense,
+    updateUpcomingExpenses,
   } = useUserDataContextContext();
 
   const categories = useMemo(
@@ -73,6 +75,8 @@ const AddExpenseForm = ({ onClose }: { onClose: Function }) => {
         month,
         year
       );
+      const upcomingExpenses = await getUpcomingExpenseService();
+      updateUpcomingExpenses(upcomingExpenses);
       updateMonthlyExpense(recentTransactionResponse);
       updateCategoryWiseExpensePercentage(percentageResponse);
       updateCategoryWiseExpenseData(categoryDataResponse);

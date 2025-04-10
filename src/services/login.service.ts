@@ -1,14 +1,11 @@
-import axios from "axios";
 import axiosInstance from "./interceptor";
 
+const baseURL = "https://expense-manager-server-m5ol.onrender.com";
 export const loginService = async (username: string, password: string) => {
-  const response = await axios.post(
-    "https://expense-manager-server-m5ol.onrender.com/auth/login",
-    {
-      username,
-      password,
-    }
-  );
+  const response = await axiosInstance.post(`auth/login`, {
+    username,
+    password,
+  });
   return response.data;
 };
 
@@ -17,14 +14,11 @@ export const registerService = async (
   password: string,
   name: string
 ) => {
-  const response = await axios.post(
-    "https://expense-manager-server-m5ol.onrender.com/users/create",
-    {
-      username,
-      password,
-      name,
-    }
-  );
+  const response = await axiosInstance.post("users/create", {
+    username,
+    password,
+    name,
+  });
   return response.data;
 };
 

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://expense-manager-server-m5ol.onrender.com",
+  baseURL: "http://localhost:3002",
+  // baseURL: "https://expense-manager-server-m5ol.onrender.com",
   timeout: 10000,
 });
 

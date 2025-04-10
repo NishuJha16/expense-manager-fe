@@ -21,9 +21,7 @@ const Home = () => {
     try {
       const data = await userInfoService();
       setUserInfo(data);
-    } catch (error) {
-      console.log("error fetching user data");
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -39,14 +37,22 @@ const Home = () => {
         <div className="flex-[1.5] flex gap-4 flex-col lg:flex-row">
           {categoryWiseExpenseData && (
             <BudgetExpenseGraph
-              expense={categoryWiseExpenseData.reduce(
-                (sum, item) => sum + item.totalExpenses,
-                0
-              )}
-              budget={categoryWiseExpenseData.reduce(
-                (sum, item) => sum + item.totalBudget,
-                0
-              )}
+              expense={
+                categoryWiseExpenseData?.length
+                  ? categoryWiseExpenseData.reduce(
+                      (sum, item) => sum + item.totalExpenses,
+                      0
+                    )
+                  : 0
+              }
+              budget={
+                categoryWiseExpenseData.length
+                  ? categoryWiseExpenseData.reduce(
+                      (sum, item) => sum + item.totalBudget,
+                      0
+                    )
+                  : 1
+              }
             />
           )}
           <ExpenseDistribution />

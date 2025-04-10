@@ -84,6 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items }) => {
               <li key={index}>
                 <Link
                   to={item.route}
+                  onClick={() => setIsSidebarOpen(false)}
                   className="flex items-center p-2 text-base font-normal text-gray-900 dark:text-gray-300 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   style={
                     window.location.pathname == item.route

@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children, ...rest }: any) => {
   const navigationItems = [
     { label: "Dashboard", icon: "dashboard", route: "/" },
     { label: "Expenses", icon: "", route: "/all-expenses" },
-    { label: "Budgets", icon: "", route: "/budgets", notificationCount: 3 },
+    { label: "Budgets", icon: "", route: "/budgets" },
   ];
 
   useEffect(() => {
